@@ -1,4 +1,3 @@
-/*************  ✨ Codeium Command ⭐  *************/
 # See https://help.github.com/articles/ignoring-files/#glob-patterns
 node_modules/
 .env
@@ -28,4 +27,3 @@ Thumbs.db
 
 # testing
 coverage
-/******  2ed53b30-d2d8-4fc1-a042-c2823ce58858  *******/
