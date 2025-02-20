@@ -3,21 +3,18 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config({});
 import connectDB from './config/database.js';
+import userRoute from './routes/userRoute.js';
+import messageRoute from './routes/messageRoute.js';
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/',(req,res)=>{
-    return res.send('Hello from Home Page');  
- });
- 
- app.get('/login',(req,res)=>{
-     return res.send('Login Page');
- });
- app.get('/singup',(req,res)=>{
-    return res.send("Signup page")
-})
+app.use(express.json());
+
+app.use("/api/v1/message",messageRoute);
+
+app.use("/api/v1/user",userRoute);
 
 connectDB().then(() => {
         app.listen(PORT, () => {
@@ -28,8 +25,4 @@ connectDB().then(() => {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1);
 });
-
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
 
