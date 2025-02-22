@@ -1,10 +1,10 @@
-import express from "express";
-import { sendmessage,getmessage } from "../controllers/messageController.js";
-import isAuthenticated from "../middleware/isAuthenticated.js";
+import express from 'express';
+import { sendMessage, getMessage } from '../controllers/messageController.js';
+import isAuthenticated from '../middleware/isAuthenticated.js';
 
-const router  = express.Router();
+const router = express.Router();
 
-router.route("/send/:id").post(isAuthenticated,sendmessage);
-router.route("/get/:id").get(isAuthenticated,getmessage);
+router.post('/:id', isAuthenticated, sendMessage);
+router.get('/:id', isAuthenticated, getMessage);
 
 export default router;

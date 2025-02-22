@@ -11,4 +11,4 @@ const conversionSchema = new mongoose.Schema({
     }],
 },{timestamps:true});
 
-export const Conversion = mongoose.model("Conversion",conversionSchema);
+export const Conversation = mongoose.model("Conversion",conversionSchema);
