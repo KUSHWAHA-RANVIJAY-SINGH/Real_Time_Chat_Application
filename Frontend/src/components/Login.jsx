@@ -8,6 +8,7 @@ function Login() {
     username: "",
     password: ""
   });
+
   const navigate = useNavigate();
 
   const handlesubmit = async (e) => {
@@ -19,48 +20,51 @@ function Login() {
         },
         withCredentials: true
       });
-      console.log(res);
+
       if (res.data.success) {
         navigate('/');
-        toast.success(res.data.message);
+        toast.success('Login successfully');
       }
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error);
     }
-    console.log(user);
-  }
+  };
 
   return (
-    <div className="min-w-96 mx-auto p-4 sm:p-6 lg:p-8">
-      <div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100'>
-        <h1 className='text-3xl font-bold text-center mb-4'>Login Page</h1>
-        <form onSubmit={handlesubmit} className='flex flex-col'>
-          <div className='mb-4'>
-            <label className='label p-2 text-center'>
-              <span className='label-text text-base font-semibold'>Username:</span>
-            </label>
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center"
+         style={{ backgroundImage: "url('/assets/patrick-tomasso-QMDap1TAu0g-unsplash.jpg')" }}>
+      
+      <div className="w-full max-w-md p-6 rounded-xl shadow-2xl shadow-gray-900 bg-gray-900 bg-opacity-50 backdrop-blur-lg border border-gray-700">
+        <h1 className="text-3xl font-bold text-white text-center mb-4">Login</h1>
+        
+        <form onSubmit={handlesubmit} className="flex flex-col">
+          <div className="mb-4">
+            <label className="text-white font-semibold">Username:</label>
             <input
               type="text"
-              placeholder='Username'
-              className='input input-bordered h-10 w-full'
+              placeholder="Enter Username"
+              className="w-full p-3 bg-transparent border border-gray-400 text-white rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={(e) => setUser({ ...user, username: e.target.value })}
             />
           </div>
-          <div className='mb-4'>
-            <label className='label p-2 text-center'>
-              <span className='label-text text-base font-semibold'>Password:</span>
-            </label>
+
+          <div className="mb-4">
+            <label className="text-white font-semibold">Password:</label>
             <input
               type="password"
-              placeholder='Password'
-              className='input input-bordered h-10 w-full'
+              placeholder="Enter Password"
+              className="w-full p-3 bg-transparent border border-gray-400 text-white rounded-md focus:ring-2 focus:ring-blue-500"
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             />
           </div>
-          <button type='submit' className='btn btn-block btn-sm mt-2 border border-slate-700'>Login</button>
+
+          <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md transition duration-300">Login</button>
         </form>
-        <p className='text-center my-2'>Don't have an account? <Link to="/signup" className='text-blue-500 underline'>Signup</Link></p>
+
+        <p className="text-gray-300 text-center mt-3">
+          Don't have an account? <Link to="/signup" className="text-blue-400 underline">Sign up</Link>
+        </p>
       </div>
     </div>
   );
