@@ -1,8 +1,22 @@
 import React from 'react'
+import OtherUser from './OtherUser'
 
 function OtherUsers() {
   return (
-    <div>OtherUsers</div>
+    <div className='overflow-y-auto h-[calc(100vh-4rem)]'>
+       <OtherUser/>
+       <OtherUser/>
+        <OtherUser/>
+         <OtherUser/>
+         <OtherUser/>
+       <OtherUser/>
+        <OtherUser/>
+         <OtherUser/>
+         <OtherUser/>
+       <OtherUser/>
+        <OtherUser/>
+         <OtherUser/>
+    </div>
   )
 }
 
