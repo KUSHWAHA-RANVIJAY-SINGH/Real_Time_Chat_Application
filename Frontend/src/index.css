@@ -1,33 +1,35 @@
+
 body {
-  margin: 0;
-  font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-image: url("./assets/patrick-tomasso-QMDap1TAu0g-unsplash.jpg");
+  background: url('https://th.bing.com/th/id/OIP.VlJ7IUfWSUPhMZDkgr1u1gHaEo?w=277&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7');
   background-size: cover;
   background-position: center;
-  min-height: 100vh;
-  width: 100%;
-  color: black; /* White for better contrast */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adds readability */
+  background-repeat: no-repeat;
+  
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3 {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-p, a, span {
-  font-family: "Roboto", sans-serif;
-  font-size: 1.1rem;
+
+::-webkit-scrollbar {
+  /* Customize the scrollbar width */
+  width:6px;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.85); /* Slightly darker for better contrast */
-  color: #F5F5F5; /* Light gray instead of pure white */
-  text-align: center;
-  padding: 12px 0;
+::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  background-color: aliceblue;
+}
+
+::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  background: #1b1b1b;
+  border-radius: 10px;
 }

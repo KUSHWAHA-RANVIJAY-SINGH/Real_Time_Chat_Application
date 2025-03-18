@@ -39,11 +39,11 @@ import MessageContainer from './MessageContainer';
 
 function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen"> {/* Ensures full height */}
       {/* <Header /> */}
-      <div className="flex-grow flex flex-row sm:h-[450px] md:h-[600px] rounded-lg bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 gap-4 m-5 p-3">
+      <div className="flex-grow flex flex-row sm:h-[450px] md:h-[550px] rounded-lg bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 gap-4 m-5 p-3 overflow-auto ">
         <Sidebar />
-        <div className="flex-grow overflow-y-auto">
+        <div className="flex-grow overflow-auto"> {/* Changed overflow to auto */}
           <MessageContainer />
         </div>
       </div>
@@ -51,5 +51,6 @@ function HomePage() {
     </div>
   );
 }
+
 
 export default HomePage;
