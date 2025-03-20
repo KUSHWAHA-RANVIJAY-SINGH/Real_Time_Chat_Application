@@ -1,24 +1,31 @@
 import React from 'react'
+import { useDispatch,useSelector } from "react-redux";
+import { setSelectedUser } from '../redux/userSlice';
 
-function OtherUser() {
-  return (
-    <div>
-    <div className='flex gap2 items-center hover:bg-zinc-200 rounded-2xl'>
-      <div className='avatar  online'>
-      <div className='w-12 rounded-full'>
-        <img src="https://th.bing.com/th/id/OIP.IGNf7GuQaCqz_RPq5wCkPgHaLH?rs=1&pid=ImgDetMain" alt="profile photo" />
-      </div>
-      </div>
-     <div className='flex flex-col flex-1'>
-         <div className='flex justify-between  flex-1 ml-2'>
-         <p>Ranvijay</p>
-      </div>
-      </div>
-    </div>
-    <div className='divider'></div>
-
-  </div>
-  )
+const OtherUser = ({ user }) => {
+    const dispatch = useDispatch();
+    const {selectedUser, onlineUsers} = useSelector(store=>store.user);
+    const isOnline = onlineUsers?.includes(user._id);
+    const selectedUserHandler = (user) => {
+        dispatch(setSelectedUser(user));
+    }
+    return (
+        <>
+            <div onClick={() => selectedUserHandler(user)} className={` ${selectedUser?._id === user?._id ? 'bg-zinc-200 text-black' : 'text-white'} flex gap-2 hover:text-black items-center hover:bg-zinc-200 rounded p-2 cursor-pointer`}>
+                <div className={`avatar ${isOnline ? 'online' : '' }`}>
+                    <div className='w-12 rounded-full'>
+                        <img src={user?.profile_photo} alt="user-profile" />
+                    </div>
+                </div>
+                <div className='flex flex-col flex-1'>
+                    <div className='flex justify-between gap-2 '>
+                        <p>{user?.fullname}</p>
+                    </div>
+                </div>
+            </div>
+            <div className='divider my-0 py-0 h-1'></div>
+        </>
+    )
 }
 
 export default OtherUser

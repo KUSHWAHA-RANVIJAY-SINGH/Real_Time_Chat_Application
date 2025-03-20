@@ -91,3 +91,21 @@ export const getOtherUser = async (req,res)=>{
         console.error(error);
     }
 }
+
+export const getUser = async (req,res)=>{
+    try {
+        const user = await User.findById(req.user).select("fullname username profile_photo");
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getAllUsername = async (req,res)=>{
+    try {
+        const users = await User.find().select("username");
+        return res.status(200).json(users);
+    } catch (error) {
+        console.error(error);
+    }
+}

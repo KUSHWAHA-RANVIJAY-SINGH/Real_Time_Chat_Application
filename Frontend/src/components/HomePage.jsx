@@ -1,8 +1,8 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { Menu, X } from 'lucide-react';
-import Sidebar from './Sidebar';
-import MessageContainer from './MessageContainer';
+// import React from 'react';
+// // import { Link } from 'react-router-dom';
+// // import { Menu, X } from 'lucide-react';
+// import Sidebar from './Sidebar';
+// import MessageContainer from './MessageContainer';
 
 // export function Header() {
 //   const [isOpen, setIsOpen] = useState(false);
@@ -37,20 +37,43 @@ import MessageContainer from './MessageContainer';
 //   );
 // }
 
-function HomePage() {
+// function HomePage() {
+//   return (
+//     <div className="flex flex-col min-h-screen"> {/* Ensures full height */}
+//       {/* <Header /> */}
+//       <div className="flex-grow flex flex-row sm:h-[450px] md:h-[550px] rounded-lg bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 gap-4 m-5 p-3 overflow-auto ">
+//         <Sidebar />
+//         <div className="flex-grow overflow-auto"> {/* Changed overflow to auto */}
+//           <MessageContainer />
+//         </div>
+//       </div>
+//       {/* <Footer /> */}
+//     </div>
+//   );
+// }
+
+
+// export default HomePage;
+import React, { useEffect } from 'react'
+import Sidebar from './Sidebar'
+import MessageContainer from './MessageContainer'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+const HomePage = () => {
+  const { authUser } = useSelector(store => store.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!authUser) {
+      navigate("/login");
+    }
+  }, []);
   return (
-    <div className="flex flex-col min-h-screen"> {/* Ensures full height */}
-      {/* <Header /> */}
-      <div className="flex-grow flex flex-row sm:h-[450px] md:h-[550px] rounded-lg bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 gap-4 m-5 p-3 overflow-auto ">
-        <Sidebar />
-        <div className="flex-grow overflow-auto"> {/* Changed overflow to auto */}
-          <MessageContainer />
-        </div>
-      </div>
-      {/* <Footer /> */}
+    <div className='flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+      <Sidebar />
+      <MessageContainer />
     </div>
-  );
+  )
 }
 
-
-export default HomePage;
+export default HomePage
