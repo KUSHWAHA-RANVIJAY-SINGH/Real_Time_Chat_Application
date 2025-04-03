@@ -17,6 +17,7 @@ import {
     key: 'root',
     version: 1,
     storage,
+    blacklist: ['socket'] // Exclude socket from persistence
   }
 
   const rootReducer = combineReducers({
@@ -33,7 +34,18 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH, 
+          REHYDRATE, 
+          PAUSE, 
+          PERSIST, 
+          PURGE, 
+          REGISTER,
+          'socket/setSocket', // Ignore socket actions
+          'user/setOnlineUsers' // Ignore online users actions
+        ],
+        ignoredActionPaths: ['payload.socket', 'payload.onlineUsers'], // Ignore specific payload paths
+        ignoredPaths: ['socket.socket'] // Ignore socket state
       },
     }),
 });

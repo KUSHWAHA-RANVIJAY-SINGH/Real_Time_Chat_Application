@@ -118,3 +118,35 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateProfilePhoto = async (req, res) => {
+    try {
+        const userId = req.id;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+
+        // Construct the full URL for the profile photo
+        const fileUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/uploads/${file.filename}`;
+        
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePhoto: fileUrl },
+            { new: true }
+        ).select("-password");
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({
+            message: "Profile photo updated successfully",
+            user: updatedUser
+        });
+    } catch (error) {
+        console.error("Error updating profile photo:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};

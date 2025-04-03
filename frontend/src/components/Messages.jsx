@@ -1,4 +1,5 @@
 import React from 'react'
+// eslint-disable-next-line no-unused-vars
 import Message from './Message'
 import useGetMessages from '../hooks/useGetMessages';
 import { useSelector } from "react-redux";
@@ -8,19 +9,13 @@ const Messages = () => {
     useGetMessages();
     useGetRealTimeMessage();
     const { messages } = useSelector(store => store.message);
+    
     return (
         <div className='px-4 flex-1 overflow-auto'>
-            {
-               messages && messages?.map((message) => {
-                    return (
-                        <Message key={message._id} message={message} />
-                    )
-                })
-            }
-
+            {messages && messages.map((message) => (
+                <Message key={message._id} message={message} />
+            ))}
         </div>
-
-
     )
 }
 

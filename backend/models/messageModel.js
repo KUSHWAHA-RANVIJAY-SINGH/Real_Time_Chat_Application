@@ -1,39 +1,38 @@
 import mongoose from "mongoose";
 
 const messageModel = new mongoose.Schema({
-    senderId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+    senderId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
-    receiverId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+    receiverId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
-    message:{
-        type:String,
-        required:function() {
-            return !this.fileUrl; // Message is required only if there's no file
+    groupId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group"
+    },
+    message: {
+        type: String,
+        required: function () {
+            return !this.fileUrl; // Make `message` required only if `fileUrl` is not present
         }
     },
     messageType: {
         type: String,
-        enum: ['text', 'image', 'audio', 'file'],
+        enum: ['text', 'image', 'file', 'audio'],
         default: 'text'
     },
-    fileUrl: {
-        type: String
-    },
-    fileName: {
-        type: String
-    },
-    fileSize: {
-        type: Number
-    },
-    fileType: {
-        type: String
+    fileUrl: String,
+    fileName: String,
+    fileSize: Number,
+    fileType: String,
+    senderName: {
+        type: String,
+        required: true
     }
-},{timestamps:true});
+}, { timestamps: true });
 
 export const Message = mongoose.model("Message", messageModel);

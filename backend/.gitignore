@@ -1,2 +1,8 @@
 node_modules
+.gitignore
+uploads
+
 .env
+.env.local
+.env.*.local
+

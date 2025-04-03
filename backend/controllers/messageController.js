@@ -13,8 +13,68 @@ export const sendMessage = async (req,res) => {
     try {
         const senderId = req.id;
         const receiverId = req.params.id;
-        const {message} = req.body;
+        const {message, senderName} = req.body;
         const file = req.file;
+
+        // Validate required fields
+        if (!senderId || !receiverId) {
+            return res.status(400).json({ message: "Sender and receiver IDs are required" });
+        }
+
+        if (!senderName) {
+            return res.status(400).json({ message: "Sender name is required" });
+        }
+
+        // // Log request details for debugging
+        // console.log("Request details:", {
+        //     senderId,
+        //     receiverId,
+        //     message,
+        //     senderName,
+        //     file: file ? {
+        //         filename: file.filename,
+        //         mimetype: file.mimetype,
+        //         size: file.size,
+        //         originalname: file.originalname
+        //     } : null
+        // });
+
+        // Validate file if present
+        if (file) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                // Delete the uploaded file if it exceeds size limit
+                const filePath = path.join(__dirname, '..', 'uploads', file.filename);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+                return res.status(413).json({ message: "File size exceeds 10MB limit" });
+            }
+
+            // Validate file type
+            const allowedTypes = {
+                'image/jpeg': true,
+                'image/png': true,
+                'image/gif': true,
+                'audio/mpeg': true,
+                'audio/wav': true,
+                'audio/ogg': true,
+                'application/pdf': true,
+                'application/msword': true,
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document': true,
+                'application/vnd.ms-excel': true,
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': true
+            };
+
+            if (!allowedTypes[file.mimetype]) {
+                // Delete the uploaded file if type is not allowed
+                const filePath = path.join(__dirname, '..', 'uploads', file.filename);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+                return res.status(415).json({ message: "Unsupported file type" });
+            }
+        }
 
         let gotConversation = await Conversation.findOne({
             participants:{$all : [senderId, receiverId]},
@@ -30,16 +90,35 @@ export const sendMessage = async (req,res) => {
         if (file) {
             // Handle file upload
             const fileUrl = `/uploads/${file.filename}`;
-            newMessage = await Message.create({
-                senderId,
-                receiverId,
-                message: message || '',
-                messageType: getMessageType(file),
-                fileUrl,
-                fileName: file.originalname,
-                fileSize: file.size,
-                fileType: file.mimetype
-            });
+            
+            // Ensure uploads directory exists
+            const uploadsDir = path.join(__dirname, '..', 'uploads');
+            if (!fs.existsSync(uploadsDir)) {
+                fs.mkdirSync(uploadsDir, { recursive: true });
+            }
+
+            try {
+                newMessage = await Message.create({
+                    senderId,
+                    receiverId,
+                    message: message || undefined, // Use `undefined` if `message` is empty
+                    messageType: getMessageType(file),
+                    fileUrl,
+                    fileName: file.originalname,
+                    fileSize: file.size,
+                    fileType: file.mimetype,
+                    senderName
+                });
+
+                console.log("Created file message:", newMessage);
+            } catch (error) {
+                // Clean up the uploaded file if message creation fails
+                const filePath = path.join(__dirname, '..', 'uploads', file.filename);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+                throw error;
+            }
         } else {
             // Handle text message
             if (!message || !message.trim()) {
@@ -49,8 +128,12 @@ export const sendMessage = async (req,res) => {
                 senderId,
                 receiverId,
                 message,
-                messageType: 'text'
+                messageType: 'text',
+                senderName
             });
+
+
+            // console.log("Created text message:", newMessage);
         }
 
         if(!newMessage) {
@@ -74,7 +157,8 @@ export const sendMessage = async (req,res) => {
         console.error("Error in sendMessage:", error);
         return res.status(500).json({ 
             message: "Internal server error while sending message",
-            error: error.message 
+            error: error.message,
+            stack: error.stack
         });
     }
 }

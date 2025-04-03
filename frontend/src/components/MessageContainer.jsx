@@ -1,57 +1,37 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SendInput from './SendInput'
 import Messages from './Messages';
-import { useSelector,useDispatch } from "react-redux";
-import { setSelectedUser } from '../redux/userSlice';
+import { useSelector } from "react-redux";
 
 const MessageContainer = () => {
-    const { selectedUser, authUser, onlineUsers } = useSelector(store => store.user);
-    const dispatch = useDispatch();
-
-    const isOnline = onlineUsers?.includes(selectedUser?._id);
-    const isoffline = !onlineUsers?.includes(selectedUser?._id);
+    const { selectedUser } = useSelector(store => store.user);
    
     return (
-        <>
-            {
-                selectedUser !== null ? (
-                    <div className='md:min-w-[550px] flex flex-col'>
-                        <div className='flex gap-2 items-center bg-zinc-800 text-white px-4 py-2 mb-2'>
-                            <div className={`avatar ${isOnline ? 'online' : 'offline'}`}>
-                                <div className='w-12 rounded-full'>
-                                    <img src={selectedUser?.profilePhoto} alt="user-profile" />
-                                </div>
-                            </div>
-                            <div className='flex flex-col flex-1'>
-                                <div className='flex justify-between gap-2'>
-                                    <div className='flex items-center gap-2'>
-                                    <p>{selectedUser?.fullName}</p>
-                                        {isOnline && (
-                                            <span className='text-xs text-green-400 font-medium'>online</span>
-    
-                                    
-                                        )}
-                                        {isoffline && (
-                                            <span className='text-xs text-red-400 font-medium'>offline</span>
-                                        )}
-                                        
-                                    </div>
-                                </div>
+        <div className='h-full flex flex-col bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+            <div className='px-4 py-2 bg-zinc-800 bg-opacity-50 backdrop-blur-md flex items-center justify-between'>
+                {selectedUser ? (
+                    <>
+                        <div className='flex items-center gap-2'>
+                            <img src={selectedUser.profilePhoto} alt="Profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full' />
+                            <div>
+                                <h2 className='text-white text-sm md:text-base font-semibold'>{selectedUser.fullName}</h2>
+                                <p className='text-gray-300 text-xs md:text-sm'>{selectedUser.username}</p>
                             </div>
                         </div>
-                        <Messages />
-                        <SendInput />
-                    </div>
+                    </>
                 ) : (
-                    <div className='md:min-w-[550px] flex flex-col justify-center items-center'>
-                        <h1 className='text-4xl text-white font-bold'>Hi,{authUser?.fullName} </h1>
-                        <h1 className='text-2xl text-white'>Let's start conversation</h1>
-
+                    <div className='text-white text-center w-full'>
+                        <p className='text-sm md:text-base'>Select a user to start chatting</p>
                     </div>
-                )
-            }
-        </>
-
+                )}
+            </div>
+            <div className='flex-1 overflow-y-auto p-4 space-y-4'>
+                <Messages />
+            </div>
+            <div className='p-4 border-t border-gray-300 bg-zinc-800 bg-opacity-50 backdrop-blur-md'>
+                <SendInput />
+            </div>
+        </div>
     )
 }
 
